@@ -101,23 +101,40 @@ class ChartViewModel(application: Application) : AndroidViewModel(application) {
     ): List<Entry> {
         return when (mode) {
             ChartMode.BY_DATE -> {
-                // Build the date label list to hand to the X-axis formatter.
-                dateLabels.postValue(
-                    readings.map { DateUtils.formatTimestamp(it.timestamp) }
-                )
-                // mapIndexed gives us both the index and the reading in one pass.
-                readings.mapIndexed { index, reading ->
-                    Entry(index.toFloat(), reading.measuredPressure)
+                // Each reading occupies one or two x-positions:
+                //   - always one point for measuredPressure
+                //   - a second point at x+0.5 for inflatedPressure if entered
+                // This produces the sawtooth pattern: gradual decline then sharp rise.
+                val entries = mutableListOf<Entry>()
+                val labels = mutableListOf<String>()
+                var x = 0f
+                for (reading in readings) {
+                    entries.add(Entry(x, reading.measuredPressure))
+                    labels.add(DateUtils.formatTimestamp(reading.timestamp))
+                    if (reading.inflatedPressure != null) {
+                        entries.add(Entry(x + 0.5f, reading.inflatedPressure))
+                        labels.add("")   // No label for the mid-point inflated entry
+                    }
+                    x += 1f
                 }
+                dateLabels.postValue(labels)
+                entries
             }
 
             ChartMode.BY_MILEAGE -> {
                 dateLabels.postValue(emptyList())
-                // Filter out readings where the user did not enter a mileage value.
+                // Same sawtooth logic but using mileage as the x-axis.
+                // Readings without mileage are excluded.
                 readings
                     .filter { it.mileage != null }
-                    .map { reading ->
-                        Entry(reading.mileage!!.toFloat(), reading.measuredPressure)
+                    .flatMap { reading ->
+                        buildList {
+                            add(Entry(reading.mileage!!.toFloat(), reading.measuredPressure))
+                            if (reading.inflatedPressure != null) {
+                                // Offset by 1 mile so the two points are visually distinct
+                                add(Entry(reading.mileage.toFloat() + 1f, reading.inflatedPressure))
+                            }
+                        }
                     }
             }
         }
