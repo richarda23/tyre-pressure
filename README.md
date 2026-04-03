@@ -74,6 +74,23 @@ app/src/main/java/com/example/tyrepressure/
   MainActivity.kt     Single activity hosting the Navigation Component
 ```
 
+## Maintenance Notes
+
+### Database schema changes
+If you modify the Room database schema (add a column, rename a table, add a new entity, etc.) you **must** increment `version` in `TyreDatabase.kt` and provide a migration:
+
+```kotlin
+val MIGRATION_1_2 = object : Migration(1, 2) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL("ALTER TABLE tyre_pressure_reading ADD COLUMN notes TEXT")
+    }
+}
+```
+
+Without a migration, Room will throw an `IllegalStateException` on launch. If you use `fallbackToDestructiveMigration()` instead, Room will silently wipe all user data.
+
+Reinstalling the app over an existing installation (e.g. pushing a new debug build via Android Studio) does **not** affect stored data — Android treats it as an update and leaves the database untouched.
+
 ## Contributing
 
 This is a personal project but issues and pull requests are welcome. Please open an issue first to discuss significant changes.

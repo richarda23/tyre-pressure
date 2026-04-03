@@ -92,5 +92,14 @@
             android:text="Save Settings"
             android:padding="16dp" />
 
+        <TextView
+            android:id="@+id/text_version"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:textSize="12sp"
+            android:textColor="?android:attr/textColorSecondary"
+            android:gravity="center" />
+
     </LinearLayout>
 </ScrollView>

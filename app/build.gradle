@@ -10,17 +10,27 @@ plugins {
 }
 
 android {
-    compileSdk 32
+def gitHash = { ->
+    def stdout = new ByteArrayOutputStream()
+    try {
+        exec { commandLine 'git', 'rev-parse', '--short', 'HEAD'; standardOutput = stdout }
+        return stdout.toString().trim()
+    } catch (Exception e) {
+        return 'unknown'
+    }
+}()
+
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.example.tyrepressure"
-        // minSdk 21 = Android 5.0 (Lollipop). Covers ~98% of active devices.
-        minSdk 21
-        targetSdk 32
+        minSdk 26
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField "String", "GIT_HASH", "\"${gitHash}\""
     }
 
     buildTypes {
@@ -45,6 +55,7 @@ android {
         // ViewBinding generates a typed binding class for each layout XML file.
         // This lets you access views as binding.myView instead of findViewById(R.id.myView).
         viewBinding true
+        buildConfig true
     }
 }
 

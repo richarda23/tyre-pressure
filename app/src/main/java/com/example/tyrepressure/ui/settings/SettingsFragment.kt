@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.example.tyrepressure.BuildConfig
 import com.example.tyrepressure.data.TyrePosition
 import com.example.tyrepressure.databinding.FragmentSettingsBinding
 
@@ -63,6 +64,8 @@ class SettingsFragment : Fragment() {
         viewModel.saveComplete.observe(viewLifecycleOwner) { isDone ->
             if (isDone) findNavController().popBackStack()
         }
+
+        binding.textVersion.text = "Version ${BuildConfig.VERSION_NAME} (${BuildConfig.GIT_HASH})"
 
         binding.buttonSaveSettings.setOnClickListener {
             saveSettings()

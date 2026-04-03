@@ -121,7 +121,8 @@ class HomeFragment : Fragment() {
             return
         }
 
-        val pressure = reading.measuredPressure
+        // Use inflated pressure if recorded — that reflects the tyre's current state.
+        val pressure = reading.inflatedPressure ?: reading.measuredPressure
         // String.format("%.1f", pressure) rounds to one decimal place (e.g. "31.5")
         button.text = "${position.displayName}\n${String.format("%.1f", pressure)} PSI"
 
