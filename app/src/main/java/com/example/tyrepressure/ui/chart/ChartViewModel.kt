@@ -71,6 +71,27 @@ class ChartViewModel(application: Application) : AndroidViewModel(application) {
      */
     val dateLabels = MutableLiveData<List<String>>(emptyList())
 
+    /**
+     * Deflation rate entries for the secondary (right) Y-axis.
+     *
+     * Each entry represents the rate of pressure loss between two consecutive readings:
+     *   BY_DATE:    PSI per day,  plotted at the x index of the later reading
+     *   BY_MILEAGE: PSI per mile, plotted at the mileage of the later reading
+     *
+     * Uses the inflated pressure as the starting point when available, so the rate
+     * reflects the true decline since the last inflation rather than since the last check.
+     *
+     * Requires at least two readings; returns empty list otherwise.
+     */
+    val deflationRateEntries: LiveData<List<Entry>> = MediatorLiveData<List<Entry>>().also { mediator ->
+        mediator.addSource(rawReadings) { readings ->
+            mediator.value = toRateEntries(readings, chartMode.value ?: ChartMode.BY_DATE)
+        }
+        mediator.addSource(chartMode) { mode ->
+            mediator.value = toRateEntries(rawReadings.value.orEmpty(), mode)
+        }
+    }
+
     init {
         val db = TyreDatabase.getDatabase(application)
         repository = TyreRepository(db.tyrePressureDao(), db.tyreSettingsDao())
@@ -136,6 +157,57 @@ class ChartViewModel(application: Application) : AndroidViewModel(application) {
                 }
                 // MPAndroidChart requires entries sorted by x value
                 entries.sortBy { it.x }
+                entries
+            }
+        }
+    }
+
+    /**
+     * Compute deflation rate entries from consecutive readings.
+     *
+     * For each pair (prev → curr):
+     *   startPressure = prev.inflatedPressure ?: prev.measuredPressure
+     *   rate = (startPressure - curr.measuredPressure) / interval
+     *
+     * A positive rate means the tyre is losing pressure (normal).
+     * A higher rate than usual indicates a worsening leak.
+     */
+    private fun toRateEntries(
+        readings: List<TyrePressureReading>,
+        mode: ChartMode
+    ): List<Entry> {
+        if (readings.size < 2) return emptyList()
+
+        return when (mode) {
+            ChartMode.BY_DATE -> {
+                val entries = mutableListOf<Entry>()
+                for (i in 1 until readings.size) {
+                    val prev = readings[i - 1]
+                    val curr = readings[i]
+                    val startPressure = prev.inflatedPressure ?: prev.measuredPressure
+                    val daysBetween = (curr.timestamp - prev.timestamp) / (1000f * 60 * 60 * 24)
+                    if (daysBetween > 0) {
+                        val rate = (startPressure - curr.measuredPressure) / daysBetween
+                        entries.add(Entry(i.toFloat(), rate))
+                    }
+                }
+                entries
+            }
+
+            ChartMode.BY_MILEAGE -> {
+                val filtered = readings.filter { it.mileage != null }
+                if (filtered.size < 2) return emptyList()
+                val entries = mutableListOf<Entry>()
+                for (i in 1 until filtered.size) {
+                    val prev = filtered[i - 1]
+                    val curr = filtered[i]
+                    val startPressure = prev.inflatedPressure ?: prev.measuredPressure
+                    val milesBetween = (curr.mileage!! - prev.mileage!!).toFloat()
+                    if (milesBetween > 0) {
+                        val rate = (startPressure - curr.measuredPressure) / milesBetween
+                        entries.add(Entry(curr.mileage.toFloat(), rate))
+                    }
+                }
                 entries
             }
         }

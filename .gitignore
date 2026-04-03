@@ -17,3 +17,4 @@ local.properties
 
 # Generated files
 app/src/main/java/com/example/tyrepressure/BuildConfig.java
+app/src/main/assets/git_hash.txt
