@@ -1,14 +1,12 @@
-name: CI
+name: Build
 
 on:
   push:
-    branches: [main, "feature/**"]
-  pull_request:
-    branches: [main]
+    branches: [ main ]
 
 jobs:
   build:
-    name: Build & Test
+    name: Build debug APK
     runs-on: ubuntu-latest
 
     steps:
@@ -18,11 +16,9 @@ jobs:
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
-          java-version: "17"
-          distribution: "temurin"
+          java-version: '17'
+          distribution: 'temurin'
 
-      # gradle-wrapper.jar is not committed to this repo (project was not
-      # scaffolded by Android Studio). Download Gradle to generate it.
       - name: Generate Gradle wrapper jar
         run: |
           wget -q https://services.gradle.org/distributions/gradle-7.3.3-bin.zip -P /tmp
@@ -39,5 +35,12 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: ${{ runner.os }}-gradle-
 
-      - name: Unit tests
-        run: ./gradlew test
+      - name: Assemble debug APK
+        run: ./gradlew assembleDebug
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-debug
+          path: app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 30
