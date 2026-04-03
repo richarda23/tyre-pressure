@@ -110,14 +110,20 @@ class ChartFragment : Fragment() {
             setPinchZoom(true)
             setDrawGridBackground(false)
 
-            // X-axis: labels at the bottom, no vertical grid lines
+            // Extra padding so axis labels aren't clipped by the view bounds
+            setExtraOffsets(8f, 8f, 8f, 16f)
+
+            // X-axis: labels at the bottom, rotated to avoid overlap
             xAxis.position = XAxis.XAxisPosition.BOTTOM
-            xAxis.granularity = 1f           // Minimum gap between axis labels
+            xAxis.granularity = 1f
             xAxis.setDrawGridLines(false)
+            xAxis.labelRotationAngle = -45f
+            xAxis.textSize = 10f
 
             // Left Y-axis: pressure in PSI, minimum 0
             axisLeft.axisMinimum = 0f
             axisLeft.setDrawGridLines(true)
+            axisLeft.textSize = 10f
 
             // Right Y-axis: not needed
             axisRight.isEnabled = false
