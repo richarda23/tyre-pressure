@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Pressure entry screen.
+
+    A ScrollView wraps everything so the form remains usable on small screens
+    even when the soft keyboard is shown (the activity uses windowSoftInputMode
+    "adjustResize" in AndroidManifest.xml).
+
+    TextInputLayout (from the Material Design library) wraps each TextInputEditText
+    to provide floating labels and inline error messages.
+-->
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- Title showing which tyre is being recorded (e.g. "Front Left Tyre") -->
+        <TextView
+            android:id="@+id/text_tyre_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tyre"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="24dp" />
+
+        <!--
+            MEASURED PRESSURE — required.
+            inputType="numberDecimal" shows a numeric keyboard with a decimal point.
+            The TextInputLayout's error property is set in code if the field is invalid.
+        -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layout_measured_pressure"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Measured Pressure (PSI)"
+            android:layout_marginBottom="16dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_measured_pressure"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--
+            INFLATED PRESSURE — optional.
+            The helper text beneath the field explains it is optional.
+        -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layout_inflated_pressure"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Inflated Pressure (PSI)"
+            app:helperText="Optional — leave blank if you did not inflate the tyre"
+            android:layout_marginBottom="16dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_inflated_pressure"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- MILEAGE — optional -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layout_mileage"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Current Mileage"
+            app:helperText="Optional — used to generate the mileage-based deflation chart"
+            android:layout_marginBottom="32dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_mileage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save Reading"
+            android:padding="16dp" />
+
+    </LinearLayout>
+</ScrollView>

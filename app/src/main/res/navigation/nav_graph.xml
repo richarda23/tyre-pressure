@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Navigation graph — defines every screen (destination) in the app and the
+    routes (actions) between them.
+
+    The Navigation Component reads this file and handles Fragment transactions,
+    the back stack, and argument passing automatically. You never call
+    FragmentTransaction manually.
+
+    app:startDestination is the screen shown when the app first opens.
+-->
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <!-- ------------------------------------------------------------------ -->
+    <!-- Home screen                                                         -->
+    <!-- ------------------------------------------------------------------ -->
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.tyrepressure.ui.home.HomeFragment"
+        android:label="Tyre Pressure"
+        tools:layout="@layout/fragment_home">
+
+        <!--
+            Navigate to the pressure entry screen.
+            Safe Args generates HomeFragmentDirections.actionHomeToEntry(tyrePosition)
+            from this action and its argument below.
+        -->
+        <action
+            android:id="@+id/action_home_to_entry"
+            app:destination="@id/pressureEntryFragment" />
+
+        <!-- Navigate to the chart screen -->
+        <action
+            android:id="@+id/action_home_to_chart"
+            app:destination="@id/chartFragment" />
+
+        <!-- Navigate to the settings screen -->
+        <action
+            android:id="@+id/action_home_to_settings"
+            app:destination="@id/settingsFragment" />
+    </fragment>
+
+    <!-- ------------------------------------------------------------------ -->
+    <!-- Pressure entry screen                                               -->
+    <!-- ------------------------------------------------------------------ -->
+    <fragment
+        android:id="@+id/pressureEntryFragment"
+        android:name="com.example.tyrepressure.ui.entry.PressureEntryFragment"
+        android:label="Record Pressure"
+        tools:layout="@layout/fragment_pressure_entry">
+
+        <!--
+            The tyre position is passed as a Safe Args argument.
+            argType="string" maps to Kotlin String.
+            Safe Args generates PressureEntryFragmentArgs with a 'tyrePosition' property.
+        -->
+        <argument
+            android:name="tyrePosition"
+            app:argType="string" />
+    </fragment>
+
+    <!-- ------------------------------------------------------------------ -->
+    <!-- Chart screen                                                        -->
+    <!-- ------------------------------------------------------------------ -->
+    <fragment
+        android:id="@+id/chartFragment"
+        android:name="com.example.tyrepressure.ui.chart.ChartFragment"
+        android:label="Deflation Chart"
+        tools:layout="@layout/fragment_chart" />
+
+    <!-- ------------------------------------------------------------------ -->
+    <!-- Settings screen                                                     -->
+    <!-- ------------------------------------------------------------------ -->
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.tyrepressure.ui.settings.SettingsFragment"
+        android:label="Settings"
+        tools:layout="@layout/fragment_settings" />
+
+</navigation>

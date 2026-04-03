@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    The root layout for MainActivity.
+
+    LinearLayout (vertical) stacks the Toolbar on top, with the
+    NavHostFragment filling all remaining space below it.
+-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!--
+        The app Toolbar.
+        We define it here (rather than relying on the theme) so we can
+        customise it — e.g. add action buttons, change its colour.
+
+        MainActivity calls setSupportActionBar(binding.toolbar) to register
+        this as the app's action bar.
+    -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+    <!--
+        The NavHostFragment.
+
+        This is the container where the Navigation Component swaps
+        Fragments in and out as the user navigates between screens.
+
+        app:navGraph points to our navigation graph (nav_graph.xml).
+        app:defaultNavHost="true" makes the system back button work
+        with the Navigation Component's back stack.
+    -->
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/nav_graph" />
+
+</LinearLayout>

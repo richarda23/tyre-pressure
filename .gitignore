@@ -1,0 +1,19 @@
+# Android Studio and IntelliJ IDEA
+.idea/
+*.iml
+.DS_Store
+
+# Gradle build outputs
+.gradle/
+build/
+app/build/
+
+# Local configuration (contains SDK path — specific to each developer's machine)
+local.properties
+
+# Keystore files (never commit signing keys to source control)
+*.jks
+*.keystore
+
+# Generated files
+app/src/main/java/com/example/tyrepressure/BuildConfig.java

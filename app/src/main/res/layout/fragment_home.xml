@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Home screen layout: four tyre buttons arranged in a 2×2 grid.
+
+    The layout approximates a top-down view of a car (for a right-hand drive
+    UK car, the driver sits on the right):
+
+        [ Front Left ]   [ Front Right ]
+        [ Rear Left  ]   [ Rear Right  ]
+
+    ConstraintLayout positions each button relative to its neighbours using
+    constraints. The buttons share the available space equally via
+    layout_width="0dp" (meaning "fill the constrained width").
+
+    Buttons are styled as MaterialButton (from the Material Design library).
+    Their background colours are set programmatically in HomeFragment based
+    on the measured pressure vs target pressure.
+-->
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="24dp">
+
+    <!-- Front Left -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_front_left"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="Front Left\n-- PSI"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/button_rear_left"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/button_front_right"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Front Right -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_front_right"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="Front Right\n-- PSI"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/button_rear_right"
+        app:layout_constraintStart_toEndOf="@id/button_front_left"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Rear Left -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_rear_left"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="Rear Left\n-- PSI"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/button_front_left"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/button_rear_right"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp" />
+
+    <!-- Rear Right -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_rear_right"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="Rear Right\n-- PSI"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/button_front_right"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/button_rear_left"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

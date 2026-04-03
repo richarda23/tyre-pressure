@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Chart screen layout.
+
+    Top section: controls (tyre spinner, axis mode toggle).
+    Bottom section: the MPAndroidChart LineChart, filling remaining space.
+
+    android:layout_weight="1" on the LineChart means it takes up all the
+    vertical space not used by the controls above it.
+-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!--
+        Tyre selector.
+        A Spinner (dropdown) lets the user switch between the four tyres.
+        ChartFragment populates this with TyrePosition display names.
+    -->
+    <Spinner
+        android:id="@+id/spinner_tyre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp" />
+
+    <!--
+        Axis mode toggle: By Date or By Mileage.
+        RadioGroup ensures only one option is selected at a time.
+    -->
+    <RadioGroup
+        android:id="@+id/radio_group_mode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="4dp">
+
+        <!-- By Date is the default selection (android:checked="true") -->
+        <RadioButton
+            android:id="@+id/radioByDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="By Date"
+            android:checked="true" />
+
+        <RadioButton
+            android:id="@+id/radioByMileage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="By Mileage" />
+    </RadioGroup>
+
+    <!--
+        Mileage-mode notice.
+        Shown only in By Mileage mode (visibility toggled in ChartFragment).
+        Explains that readings without mileage entered will not appear.
+    -->
+    <TextView
+        android:id="@+id/text_mileage_note"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Only readings with mileage entered are shown in this mode."
+        android:textSize="12sp"
+        android:textStyle="italic"
+        android:visibility="gone"
+        android:layout_marginBottom="8dp" />
+
+    <!--
+        The MPAndroidChart line chart.
+        layout_weight="1" and layout_height="0dp" together mean:
+        "fill all vertical space not claimed by the views above."
+    -->
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/line_chart"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+</LinearLayout>

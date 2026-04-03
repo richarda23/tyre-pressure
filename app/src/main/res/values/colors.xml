@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Material Design primary palette -->
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!--
+        Tyre status colours used on the home screen buttons.
+        These are set programmatically in HomeFragment based on how far
+        the measured pressure is from the user's target pressure.
+    -->
+
+    <!-- Green: pressure within 10% of target → tyre is fine -->
+    <color name="tyre_ok">#FF4CAF50</color>
+
+    <!-- Amber: pressure 10–20% below target → needs attention soon -->
+    <color name="tyre_low">#FFFF9800</color>
+
+    <!-- Red: pressure more than 20% below target → inflate now -->
+    <color name="tyre_critical">#FFF44336</color>
+
+    <!-- Grey: no pressure readings recorded yet for this tyre -->
+    <color name="tyre_no_data">#FF9E9E9E</color>
+
+    <!-- Blue: line colour for the MPAndroidChart pressure trend chart -->
+    <color name="chart_line">#FF1976D2</color>
+</resources>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    All user-visible strings live here.
+
+    Keeping strings in this file (rather than hard-coded in layouts or Kotlin)
+    is good practice because:
+      - It makes the app easier to translate into other languages.
+      - It is easier to find and update all text in one place.
+      - Android Lint warns you if you hard-code strings in layout XML.
+-->
+<resources>
+    <string name="app_name">Tyre Pressure</string>
+
+    <!-- Home screen -->
+    <string name="label_front_left">Front Left</string>
+    <string name="label_front_right">Front Right</string>
+    <string name="label_rear_left">Rear Left</string>
+    <string name="label_rear_right">Rear Right</string>
+    <string name="pressure_no_data">-- PSI</string>
+
+    <!-- Toolbar actions -->
+    <string name="action_chart">Chart</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Pressure entry screen -->
+    <string name="hint_measured_pressure">Measured Pressure (PSI)</string>
+    <string name="hint_inflated_pressure">Inflated Pressure (PSI)</string>
+    <string name="hint_mileage">Current Mileage</string>
+    <string name="helper_inflated_pressure">Optional — leave blank if you did not inflate the tyre</string>
+    <string name="helper_mileage">Optional — used to generate the mileage-based deflation chart</string>
+    <string name="button_save_reading">Save Reading</string>
+
+    <!-- Chart screen -->
+    <string name="label_by_date">By Date</string>
+    <string name="label_by_mileage">By Mileage</string>
+    <string name="notice_mileage_mode">Only readings with mileage entered are shown in this mode.</string>
+    <string name="chart_no_data">No readings recorded for this tyre yet</string>
+
+    <!-- Settings screen -->
+    <string name="settings_title">Target Tyre Pressures (PSI)</string>
+    <string name="settings_description">Enter the recommended pressure for your car. Check the vehicle handbook or the sticker inside the driver\u2019s door frame.</string>
+    <string name="button_save_settings">Save Settings</string>
+</resources>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Toolbar menu for the home screen.
+
+    Each <item> appears as a button in the toolbar.
+    app:showAsAction="ifRoom" means: show the icon in the toolbar if there
+    is space; otherwise collapse it into the overflow (⋮) menu.
+-->
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Navigates to the deflation chart screen -->
+    <item
+        android:id="@+id/action_chart"
+        android:title="Chart"
+        android:icon="@android:drawable/ic_dialog_info"
+        app:showAsAction="ifRoom" />
+
+    <!-- Navigates to the target pressure settings screen -->
+    <item
+        android:id="@+id/action_settings"
+        android:title="Settings"
+        android:icon="@android:drawable/ic_menu_manage"
+        app:showAsAction="ifRoom" />
+
+</menu>

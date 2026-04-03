@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Configures which app data is included in Android Auto Backup.
+
+    Android Auto Backup (API 23+) automatically backs up app data to the user's
+    Google Drive. This means tyre readings are preserved when the user gets a new
+    phone or reinstalls the app.
+
+    We include the Room database (all tyre pressure readings and settings) and
+    exclude shared preferences (which hold only temporary UI state).
+-->
+<full-backup-content>
+    <!-- Include the Room database file -->
+    <include domain="database" path="." />
+    <!-- Exclude shared preferences as they hold only transient UI state -->
+    <exclude domain="sharedpref" path="." />
+</full-backup-content>
