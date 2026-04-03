@@ -118,6 +118,7 @@ class ChartViewModel(application: Application) : AndroidViewModel(application) {
                     x += 1f
                 }
                 dateLabels.postValue(labels)
+                entries.sortBy { it.x }
                 entries
             }
 
@@ -125,17 +126,17 @@ class ChartViewModel(application: Application) : AndroidViewModel(application) {
                 dateLabels.postValue(emptyList())
                 // Same sawtooth logic but using mileage as the x-axis.
                 // Readings without mileage are excluded.
-                readings
-                    .filter { it.mileage != null }
-                    .flatMap { reading ->
-                        buildList {
-                            add(Entry(reading.mileage!!.toFloat(), reading.measuredPressure))
-                            if (reading.inflatedPressure != null) {
-                                // Offset by 1 mile so the two points are visually distinct
-                                add(Entry(reading.mileage.toFloat() + 1f, reading.inflatedPressure))
-                            }
-                        }
+                val entries = mutableListOf<Entry>()
+                for (reading in readings.filter { it.mileage != null }) {
+                    entries.add(Entry(reading.mileage!!.toFloat(), reading.measuredPressure))
+                    if (reading.inflatedPressure != null) {
+                        // Offset by 1 mile so the two points are visually distinct
+                        entries.add(Entry(reading.mileage.toFloat() + 1f, reading.inflatedPressure))
                     }
+                }
+                // MPAndroidChart requires entries sorted by x value
+                entries.sortBy { it.x }
+                entries
             }
         }
     }
