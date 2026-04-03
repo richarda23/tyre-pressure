@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Outer tyre rubber (dark annulus) -->
+    <path
+        android:fillColor="#1E1E1E"
+        android:pathData="M54,18 A36,36 0 1,0 54,90 A36,36 0 1,0 54,18 Z" />
+
+    <!-- Tread blocks: 8 slightly lighter segments around the outer ring -->
+    <group android:pivotX="54" android:pivotY="54" android:rotation="0">
+        <path android:fillColor="#3A3A3A"
+            android:pathData="M51.5,18 L56.5,18 L56.5,25 L51.5,25 Z" />
+    </group>
+    <group android:pivotX="54" android:pivotY="54" android:rotation="45">
+        <path android:fillColor="#3A3A3A"
+            android:pathData="M51.5,18 L56.5,18 L56.5,25 L51.5,25 Z" />
+    </group>
+    <group android:pivotX="54" android:pivotY="54" android:rotation="90">
+        <path android:fillColor="#3A3A3A"
+            android:pathData="M51.5,18 L56.5,18 L56.5,25 L51.5,25 Z" />
+    </group>
+    <group android:pivotX="54" android:pivotY="54" android:rotation="135">
+        <path android:fillColor="#3A3A3A"
+            android:pathData="M51.5,18 L56.5,18 L56.5,25 L51.5,25 Z" />
+    </group>
+    <group android:pivotX="54" android:pivotY="54" android:rotation="180">
+        <path android:fillColor="#3A3A3A"
+            android:pathData="M51.5,18 L56.5,18 L56.5,25 L51.5,25 Z" />
+    </group>
+    <group android:pivotX="54" android:pivotY="54" android:rotation="225">
+        <path android:fillColor="#3A3A3A"
+            android:pathData="M51.5,18 L56.5,18 L56.5,25 L51.5,25 Z" />
+    </group>
+    <group android:pivotX="54" android:pivotY="54" android:rotation="270">
+        <path android:fillColor="#3A3A3A"
+            android:pathData="M51.5,18 L56.5,18 L56.5,25 L51.5,25 Z" />
+    </group>
+    <group android:pivotX="54" android:pivotY="54" android:rotation="315">
+        <path android:fillColor="#3A3A3A"
+            android:pathData="M51.5,18 L56.5,18 L56.5,25 L51.5,25 Z" />
+    </group>
+
+    <!-- Alloy rim -->
+    <path
+        android:fillColor="#D0D0D0"
+        android:pathData="M54,32 A22,22 0 1,0 54,76 A22,22 0 1,0 54,32 Z" />
+
+    <!-- 5 spokes (each is a bar from rim edge to centre, rotated 72° apart) -->
+    <group android:pivotX="54" android:pivotY="54" android:rotation="0">
+        <path android:fillColor="#909090"
+            android:pathData="M51.5,32 L56.5,32 L56.5,54 L51.5,54 Z" />
+    </group>
+    <group android:pivotX="54" android:pivotY="54" android:rotation="72">
+        <path android:fillColor="#909090"
+            android:pathData="M51.5,32 L56.5,32 L56.5,54 L51.5,54 Z" />
+    </group>
+    <group android:pivotX="54" android:pivotY="54" android:rotation="144">
+        <path android:fillColor="#909090"
+            android:pathData="M51.5,32 L56.5,32 L56.5,54 L51.5,54 Z" />
+    </group>
+    <group android:pivotX="54" android:pivotY="54" android:rotation="216">
+        <path android:fillColor="#909090"
+            android:pathData="M51.5,32 L56.5,32 L56.5,54 L51.5,54 Z" />
+    </group>
+    <group android:pivotX="54" android:pivotY="54" android:rotation="288">
+        <path android:fillColor="#909090"
+            android:pathData="M51.5,32 L56.5,32 L56.5,54 L51.5,54 Z" />
+    </group>
+
+    <!-- Centre hub -->
+    <path
+        android:fillColor="#505050"
+        android:pathData="M54,46 A8,8 0 1,0 54,62 A8,8 0 1,0 54,46 Z" />
+
+    <!-- Centre cap highlight -->
+    <path
+        android:fillColor="#A0A0A0"
+        android:pathData="M54,50 A4,4 0 1,0 54,58 A4,4 0 1,0 54,50 Z" />
+
+    <!-- Rim shine (subtle highlight in upper-left quadrant) -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.18"
+        android:pathData="M38,40 Q40,32 48,32 Q38,36 38,46 Z" />
+
+</vector>

@@ -15,6 +15,7 @@ import com.example.tyrepressure.databinding.FragmentChartBinding
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.formatter.DefaultValueFormatter
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 
 /**
@@ -157,8 +158,11 @@ class ChartFragment : Fragment() {
                 // IndexAxisValueFormatter maps integer X positions (0, 1, 2…)
                 // to the corresponding date strings in the list.
                 binding.lineChart.xAxis.valueFormatter = IndexAxisValueFormatter(labels)
-                binding.lineChart.invalidate()
+            } else {
+                // BY_MILEAGE mode: X values are real mileage floats — show them as integers.
+                binding.lineChart.xAxis.valueFormatter = DefaultValueFormatter(0)
             }
+            binding.lineChart.invalidate()
         }
 
         // Show/hide the "mileage mode" notice.

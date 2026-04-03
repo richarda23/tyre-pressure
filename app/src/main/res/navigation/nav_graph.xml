@@ -16,9 +16,7 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/homeFragment">
 
-    <!-- ------------------------------------------------------------------ -->
-    <!-- Home screen                                                         -->
-    <!-- ------------------------------------------------------------------ -->
+    <!-- Home screen -->
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.tyrepressure.ui.home.HomeFragment"
@@ -45,9 +43,7 @@
             app:destination="@id/settingsFragment" />
     </fragment>
 
-    <!-- ------------------------------------------------------------------ -->
-    <!-- Pressure entry screen                                               -->
-    <!-- ------------------------------------------------------------------ -->
+    <!-- Pressure entry screen -->
     <fragment
         android:id="@+id/pressureEntryFragment"
         android:name="com.example.tyrepressure.ui.entry.PressureEntryFragment"
@@ -64,18 +60,14 @@
             app:argType="string" />
     </fragment>
 
-    <!-- ------------------------------------------------------------------ -->
-    <!-- Chart screen                                                        -->
-    <!-- ------------------------------------------------------------------ -->
+    <!-- Chart screen -->
     <fragment
         android:id="@+id/chartFragment"
         android:name="com.example.tyrepressure.ui.chart.ChartFragment"
         android:label="Deflation Chart"
         tools:layout="@layout/fragment_chart" />
 
-    <!-- ------------------------------------------------------------------ -->
-    <!-- Settings screen                                                     -->
-    <!-- ------------------------------------------------------------------ -->
+    <!-- Settings screen -->
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.tyrepressure.ui.settings.SettingsFragment"
