@@ -1,5 +1,7 @@
 package com.example.tyrepressure.ui.chart
 
+import android.graphics.Color
+import android.util.TypedValue
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -110,8 +112,14 @@ class ChartFragment : Fragment() {
             setPinchZoom(true)
             setDrawGridBackground(false)
 
-            // Extra padding so axis labels aren't clipped by the view bounds
-            setExtraOffsets(8f, 8f, 8f, 16f)
+            // Resolve the theme's primary text colour so the chart looks correct
+            // in both light and dark mode.
+            val tv = TypedValue()
+            requireContext().theme.resolveAttribute(android.R.attr.textColorPrimary, tv, true)
+            val textColor = ContextCompat.getColor(requireContext(), tv.resourceId)
+
+            // Extra padding — bottom needs to be large enough for rotated date labels
+            setExtraOffsets(8f, 8f, 8f, 50f)
 
             // X-axis: labels at the bottom, rotated to avoid overlap
             xAxis.position = XAxis.XAxisPosition.BOTTOM
@@ -119,11 +127,14 @@ class ChartFragment : Fragment() {
             xAxis.setDrawGridLines(false)
             xAxis.labelRotationAngle = -45f
             xAxis.textSize = 10f
+            xAxis.textColor = textColor
+            xAxis.setDrawLabels(true)
 
             // Left Y-axis: pressure in PSI, minimum 0
             axisLeft.axisMinimum = 0f
             axisLeft.setDrawGridLines(true)
             axisLeft.textSize = 10f
+            axisLeft.textColor = textColor
 
             // Right Y-axis: not needed
             axisRight.isEnabled = false
