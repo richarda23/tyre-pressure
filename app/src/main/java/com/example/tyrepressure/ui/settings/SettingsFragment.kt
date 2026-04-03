@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.tyrepressure.BuildConfig
 import com.example.tyrepressure.data.TyrePosition
 import com.example.tyrepressure.databinding.FragmentSettingsBinding
 
@@ -65,7 +64,14 @@ class SettingsFragment : Fragment() {
             if (isDone) findNavController().popBackStack()
         }
 
-        binding.textVersion.text = "Version ${BuildConfig.VERSION_NAME} (${BuildConfig.GIT_HASH})"
+        val gitHash = try {
+            requireContext().assets.open("git_hash.txt").bufferedReader().readText().trim()
+        } catch (e: Exception) {
+            "unknown"
+        }
+        val versionName = requireContext().packageManager
+            .getPackageInfo(requireContext().packageName, 0).versionName
+        binding.textVersion.text = "Version $versionName ($gitHash)"
 
         binding.buttonSaveSettings.setOnClickListener {
             saveSettings()

@@ -9,17 +9,27 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'
 }
 
-android {
-def gitHash = { ->
-    def stdout = new ByteArrayOutputStream()
-    try {
-        exec { commandLine 'git', 'rev-parse', '--short', 'HEAD'; standardOutput = stdout }
-        return stdout.toString().trim()
-    } catch (Exception e) {
-        return 'unknown'
+// Write the current git hash to an assets file at build execution time.
+// outputs.upToDateWhen { false } ensures this task always runs, even on
+// incremental builds, so the hash is never stale.
+task writeGitHash {
+    def outputFile = file("src/main/assets/git_hash.txt")
+    outputs.upToDateWhen { false }
+    doLast {
+        def stdout = new ByteArrayOutputStream()
+        try {
+            exec { commandLine 'git', 'rev-parse', '--short', 'HEAD'; standardOutput = stdout }
+            outputFile.parentFile.mkdirs()
+            outputFile.text = stdout.toString().trim()
+        } catch (Exception e) {
+            outputFile.parentFile.mkdirs()
+            outputFile.text = 'unknown'
+        }
     }
-}()
+}
+preBuild.dependsOn writeGitHash
 
+android {
     compileSdk 34
 
     defaultConfig {
@@ -30,7 +40,6 @@ def gitHash = { ->
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField "String", "GIT_HASH", "\"${gitHash}\""
     }
 
     buildTypes {
@@ -55,7 +64,6 @@ def gitHash = { ->
         // ViewBinding generates a typed binding class for each layout XML file.
         // This lets you access views as binding.myView instead of findViewById(R.id.myView).
         viewBinding true
-        buildConfig true
     }
 }
 
