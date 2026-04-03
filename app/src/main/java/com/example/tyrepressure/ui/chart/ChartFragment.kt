@@ -15,10 +15,12 @@ import com.example.tyrepressure.R
 import com.example.tyrepressure.data.TyrePosition
 import com.example.tyrepressure.databinding.FragmentChartBinding
 import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.DefaultValueFormatter
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 
 /**
  * Screen for visualising tyre pressure trends.
@@ -136,44 +138,30 @@ class ChartFragment : Fragment() {
             axisLeft.textSize = 10f
             axisLeft.textColor = textColor
 
-            // Right Y-axis: not needed
-            axisRight.isEnabled = false
+            // Right Y-axis: used for deflation rate (PSI/day or PSI/mile)
+            axisRight.isEnabled = true
+            axisRight.textSize = 10f
+            axisRight.setDrawGridLines(false)
 
-            legend.isEnabled = false         // Single line per chart — no legend needed
+            // Legend identifies the two lines
+            legend.isEnabled = true
+            legend.textSize = 11f
         }
     }
 
     /**
      * Observe the ViewModel's LiveData and update the chart when data changes.
+     *
+     * Both [ChartViewModel.chartEntries] and [ChartViewModel.deflationRateEntries] feed
+     * into [updateChart] so the two lines are always redrawn together.
      */
     private fun observeData() {
-        viewModel.chartEntries.observe(viewLifecycleOwner) { entries ->
-            if (entries.isEmpty()) {
-                binding.lineChart.clear()
-                binding.lineChart.setNoDataText("No readings recorded for this tyre yet")
-                binding.lineChart.invalidate()
-                return@observe
-            }
-
-            val dataSet = LineDataSet(entries, "Pressure (PSI)").apply {
-                color = ContextCompat.getColor(requireContext(), R.color.chart_line)
-                setCircleColor(ContextCompat.getColor(requireContext(), R.color.chart_line))
-                lineWidth = 2f
-                circleRadius = 4f
-                setDrawValues(true)          // Show the PSI number above each data point
-                valueTextSize = 10f
-            }
-
-            binding.lineChart.data = LineData(dataSet)
-            // invalidate() tells Android to redraw the View with the new data.
-            binding.lineChart.invalidate()
-        }
+        viewModel.chartEntries.observe(viewLifecycleOwner) { updateChart() }
+        viewModel.deflationRateEntries.observe(viewLifecycleOwner) { updateChart() }
 
         // In BY_DATE mode, swap in date strings as X-axis labels.
         viewModel.dateLabels.observe(viewLifecycleOwner) { labels ->
             if (labels.isNotEmpty()) {
-                // IndexAxisValueFormatter maps integer X positions (0, 1, 2…)
-                // to the corresponding date strings in the list.
                 binding.lineChart.xAxis.valueFormatter = IndexAxisValueFormatter(labels)
             } else {
                 // BY_MILEAGE mode: X values are real mileage floats — show them as integers.
@@ -182,11 +170,66 @@ class ChartFragment : Fragment() {
             binding.lineChart.invalidate()
         }
 
-        // Show/hide the "mileage mode" notice.
+        // Show/hide the "mileage mode" notice and update right-axis label.
         viewModel.chartMode.observe(viewLifecycleOwner) { mode ->
             binding.textMileageNote.visibility =
                 if (mode == ChartMode.BY_MILEAGE) View.VISIBLE else View.GONE
         }
+    }
+
+    /**
+     * Rebuild the chart with the latest pressure and deflation-rate datasets.
+     *
+     * Pressure line: left Y-axis (PSI)
+     * Deflation rate line: right Y-axis (PSI/day or PSI/mile), dashed, shown only
+     * when at least two readings exist.
+     */
+    private fun updateChart() {
+        val pressureEntries = viewModel.chartEntries.value ?: return
+        val rateEntries = viewModel.deflationRateEntries.value.orEmpty()
+        val mode = viewModel.chartMode.value ?: ChartMode.BY_DATE
+        val rateLabel = if (mode == ChartMode.BY_MILEAGE) "PSI/mile" else "PSI/day"
+
+        if (pressureEntries.isEmpty()) {
+            binding.lineChart.clear()
+            binding.lineChart.setNoDataText("No readings recorded for this tyre yet")
+            binding.lineChart.invalidate()
+            return
+        }
+
+        val dataSets = mutableListOf<ILineDataSet>()
+
+        dataSets.add(LineDataSet(pressureEntries, "Pressure (PSI)").apply {
+            color = ContextCompat.getColor(requireContext(), R.color.chart_line)
+            setCircleColor(ContextCompat.getColor(requireContext(), R.color.chart_line))
+            lineWidth = 2f
+            circleRadius = 4f
+            setDrawValues(true)
+            valueTextSize = 10f
+            axisDependency = YAxis.AxisDependency.LEFT
+        })
+
+        if (rateEntries.isNotEmpty()) {
+            dataSets.add(LineDataSet(rateEntries, rateLabel).apply {
+                color = ContextCompat.getColor(requireContext(), R.color.tyre_low)
+                setCircleColor(ContextCompat.getColor(requireContext(), R.color.tyre_low))
+                lineWidth = 1.5f
+                circleRadius = 3f
+                setDrawValues(false)
+                enableDashedLine(10f, 5f, 0f)
+                axisDependency = YAxis.AxisDependency.RIGHT
+            })
+        }
+
+        // Show right axis only when rate data is available
+        val tv = android.util.TypedValue()
+        requireContext().theme.resolveAttribute(android.R.attr.textColorPrimary, tv, true)
+        val textColor = ContextCompat.getColor(requireContext(), tv.resourceId)
+        binding.lineChart.axisRight.isEnabled = rateEntries.isNotEmpty()
+        binding.lineChart.axisRight.textColor = textColor
+
+        binding.lineChart.data = LineData(dataSets)
+        binding.lineChart.invalidate()
     }
 
     override fun onDestroyView() {
